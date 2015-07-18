@@ -1,0 +1,1 @@
+/var/www/tortas/app/views/products/show.blade.php
