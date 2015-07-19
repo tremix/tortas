@@ -295,7 +295,7 @@
                         <a href="{{{ URL::to('/products/lista') }}}">Lista de Productos</a>
                     </li>
                     <li>
-                        <a href="morris.html">Nuevos Productos</a>
+                        <a href="{{{ URL::to('admin') }}}">Nuevos Productos</a>
                     </li>
                     <li>
                         <a href="morris.html">Codigos de Barras</a>

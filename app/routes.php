@@ -47,6 +47,14 @@ Route::get('/listar', function(){
    return View::make('admin.product');
 });
 
+Route::group(array('prefix' => 'admin'), function()
+{
+    Route::get('/', function()
+    {
+        return "Hola";
+    });
+});
+
 // Confide RESTful route
 Route::get('users/confirm/{code}', 'UsersController@getConfirm');
 Route::get('users/reset_password/{token}', 'UsersController@getReset');
