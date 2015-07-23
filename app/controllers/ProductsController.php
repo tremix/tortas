@@ -1,119 +1,90 @@
 <?php
-
 class ProductsController extends \BaseController {
 
-    public function __construct(Product $post)
+    public function __construct(Product $product)
     {
         parent::__construct();
-        $this->post = $post;
+        $this->product = $product;
     }
     /**
-	 * Display a listing of products
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//$products = Product::all();
-
+     * Display a listing of products
+     *
+     * @return Response
+     */
+    public function getIndex()
+    {
+        //$products = Product::all();
         $products = Product::All();
-		//return View::make('admin.list_prod', compact('products'));
+        //return View::make('admin.list_prod', compact('products'));
 
-        return compact('id',$products);
-        //return View::make('admin.list_prod');
-	}
+        return View::make('admin.products.index');
+    }
+    /**
+     * Show the form for creating a new product
+     *
+     * @return Response
+     */
+    public function getCreate()
+    {
+        $category = Product::lists('category_id');
+        $combobox = array('' => "Seleccione ... ") + $category;
+        $selected = array();
+        return View::make('admin.products.create',  compact('combobox'));
+    }
 
-	/**
-	 * Show the form for creating a new product
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//return View::make('products.create');
-        return 'Soy create';
-	}
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return Response
+     */
+    public function postCreate()
+    {
+        // Declare the rules for the form validation
+        /*$rules = array(
+            'title'   => 'required|min:3',
+            'content' => 'required|min:3'
+        );*/
 
-	/**
-	 * Store a newly created product in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		$validator = Validator::make($data = Input::all(), Product::$rules);
+        // Validate the inputs
+        //$validator = Validator::make(Input::all(), $rules);
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
+        // Check if the form validates with success
+        /*if ($validator->passes())
+        {*/
+            // Create a new blog post
+            $user = Auth::user();
 
-		Product::create($data);
+            // Update the blog post data
+            $this->product->code           = Input::get('code');
+            $this->product->name           = Input::get('name');
+            $this->product->cost           = Input::get('cost');
+            $this->product->price          = Input::get('price');
+            $this->product->image          = Input::get('image');
+            $this->product->category_id    = Input::get('category');
+            $this->product->quantity       = Input::get('quantity');
 
-		return Redirect::route('products.index');
-	}
+            // Was the blog post created?
+            if($this->product->save())
+            {
+                // Redirect to the new blog post page
+                //return Redirect::to('admin/blogs/' . $this->post->id . '/edit')->with('success', Lang::get('admin/blogs/messages.create.success'));
+                return Redirect::to('products/');
+            }
 
-	/**
-	 * Display the specified product.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//$product = Product::findOrFail($id);
+            // Redirect to the blog post create page
+            //return Redirect::to('admin/blogs/create')->with('error', Lang::get('admin/blogs/messages.create.error'));
+//       }
 
-		//return View::make('products.show', compact('product'));
+        // Form validation failed
+        //return Redirect::to('admin/blogs/create')->withInput()->withErrors($validator);
+    }
 
-        return "Soy show".$id;
-	}
+    public function getData()
+    {
+        $product = Product::select(array('products.code', 'products.name', 'products.price', 'products.quantity', 'products.image'));
 
-	/**
-	 * Show the form for editing the specified product.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		$product = Product::find($id);
-
-		return View::make('products.edit', compact('product'));
-	}
-
-	/**
-	 * Update the specified product in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		$product = Product::findOrFail($id);
-
-		$validator = Validator::make($data = Input::all(), Product::$rules);
-
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
-
-		$product->update($data);
-
-		return Redirect::route('products.index');
-	}
-
-	/**
-	 * Remove the specified product from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		Product::destroy($id);
-
-		return Redirect::route('products.index');
-	}
+        return Datatables::of($product)
+            ->make();
+    }
 
 }

@@ -51,7 +51,7 @@ Route::group(array('prefix' => 'admin'), function()
 {
     Route::get('/', function()
     {
-        return "Hola";
+        return View::make('admin.product')  ;
     });
 });
 
@@ -64,4 +64,13 @@ Route::controller( 'users', 'UsersController');
 # Index Page - Last route, no matches
 Route::get('/', array('uses' => 'UsersController@getIndex'));
 
-Route::resource('products', 'ProductsController');
+/*
+Route::post('products', function(){
+    var_dump(Input::all());
+});
+*/
+Route::controller('products', 'ProductsController');
+Route::get('products/{post}/edit', 'ProductsController@getEdit');
+Route::post('products/{post}/edit', 'ProductsController@postEdit');
+
+//Route::get('products/data', array('as' => 'data', 'uses' => 'ProductsController@data'));

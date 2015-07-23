@@ -9,11 +9,12 @@ class ProductsTableSeeder extends Seeder {
 	{
 		$faker = Faker::create();
 
-		foreach(range(1, 10) as $index)
+		foreach(range(1, 100) as $index)
 		{
 
 			Product::create([
                 'code' => $faker->regexify('[A-Z0-9]{4,8}'),
+                'name' => $faker->username,
                 'name' => $faker->name,
                 'unit' => $faker->randomElement(['KG', 'GR', 'UND']),
                 'size' => $faker->randomElement(['P', 'M', 'G']),

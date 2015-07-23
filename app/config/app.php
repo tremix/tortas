@@ -123,7 +123,9 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
         'Zizaco\Entrust\EntrustServiceProvider',
         'Zizaco\Confide\ServiceProvider',
-        'Way\Generators\GeneratorsServiceProvider'
+        'Way\Generators\GeneratorsServiceProvider',
+        'Bllim\Datatables\DatatablesServiceProvider',
+        'Intervention\Image\ImageServiceProvider',
 	),
 
 	/*
@@ -192,6 +194,8 @@ return array(
 		'View'            => 'Illuminate\Support\Facades\View',
         'Entrust'    => 'Zizaco\Entrust\EntrustFacade',
         'Confide'    => 'Zizaco\Confide\Facade',
+        'Datatables'      => 'Bllim\Datatables\Facade\Datatables',
+        'Image' => 'Intervention\Image\Facades\Image',
 	),
 
 );
